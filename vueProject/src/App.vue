@@ -45,6 +45,8 @@
         border: 1px solid #d7dde4;
         background: #f5f7f9;
         position: relative;
+        border-radius: 4px;
+        overflow: hidden;
     }
     .layout-breadcrumb{
         padding: 10px 15px 0;
@@ -79,9 +81,18 @@
         border-radius: 3px;
         margin: 15px auto;
     }
+    .layout-ceiling-main a{
+        color: #9ba7b5;
+    }
+    .layout-hide-text .layout-text{
+        display: none;
+    }
+    .ivu-col{
+        transition: width .2s ease-in-out;
+    }
 </style>
 <template>
-    <div class="layout">
+    <div class="layout" :class="{'layout-hide-text': spanLeft < 5}">
         <div class="layout-ceiling">
             <div class="layout-ceiling-main">
                 <a href="#">注册登录</a> |
@@ -97,55 +108,56 @@
         </div>
         
 
-        <Row type="flex">
-            <Col span="5" class="layout-menu-left">
-                <Menu active-name="1-2" theme="dark" width="auto" :open-names="['1']">
+         <Row type="flex">
+            <Col :span="spanLeft" class="layout-menu-left">
+                <Menu active-name="1" theme="dark" width="auto">
                     <div class="layout-logo-left"></div>
-                    <Submenu name="1">
-                        <template slot="title">
-                            <Icon type="ios-navigate"></Icon>
-                            用户
-                        </template>
-                        <MenuItem name="1-1">
-                        
-                          首页
-                        </MenuItem>
-                        <MenuItem name="1-2">
-                            <router-link to="./user"> 
-                                用户管理
-                            </router-link>
-                        </MenuItem>
-                        <MenuItem name="1-3">分类管理</MenuItem>
-                        <MenuItem name="1-4">新闻管理</MenuItem>
-                        <MenuItem name="1-5">评论管理</MenuItem>
-                    </Submenu>
-                    <Submenu name="2">
-                        <template slot="title">
-                            <Icon type="ios-keypad"></Icon>
-                            设置
-                        </template>
-                        <MenuItem name="2-1">修改密码</MenuItem>
-                        <MenuItem name="2-2">个人信息</MenuItem>
-                    </Submenu>
-                    
+                    <MenuItem name="1">
+                        <Icon type="ios-navigate" :size="iconSize"></Icon>
+                        <span class="layout-text">
+                            <router-link to="/" exact active-class="active">首页</router-link>
+                          </span>
+                    </MenuItem>
+                    <MenuItem name="2">
+                        <Icon type="ios-keypad" :size="iconSize"></Icon>
+                        <span class="layout-text">
+                            <router-link to="/user" >用户</router-link>
+                        </span>
+                    </MenuItem>
+                    <MenuItem name="3">
+                        <Icon type="ios-analytics" :size="iconSize"></Icon>
+                        <span class="layout-text"><router-link to="cate" >分类</router-link></span>
+                    </MenuItem>
+                    <MenuItem name="4">
+                        <Icon type="ios-navigate" :size="iconSize"></Icon>
+                        <span class="layout-text"><router-link to="/news" >新闻</router-link></span>
+                    </MenuItem>
+                    <MenuItem name="5">
+                        <Icon type="ios-keypad" :size="iconSize"></Icon>
+                        <span class="layout-text"><router-link to="/comment" >评论</router-link></span>
+                    </MenuItem>
                 </Menu>
             </Col>
-            <Col span="19">
-                <div class="layout-header"></div>
+            <Col :span="spanRight">
+                <div class="layout-header">
+                    <Button type="text" @click="toggleClick">
+                        <Icon type="navicon" size="32"></Icon>
+                    </Button>
+                </div>
                 <div class="layout-breadcrumb">
                     <Breadcrumb>
                         <BreadcrumbItem href="#">首页</BreadcrumbItem>
-                        <BreadcrumbItem href="#">应用中心</BreadcrumbItem>
-                        <BreadcrumbItem>某应用</BreadcrumbItem>
+                        <BreadcrumbItem href="#">用户中心</BreadcrumbItem>
+                        <BreadcrumbItem>用户设置</BreadcrumbItem>
                     </Breadcrumb>
                 </div>
                 <div class="layout-content">
                     <div class="layout-content-main">
-                      <router-view></router-view>
+                        <router-view></router-view>
                     </div>
                 </div>
                 <div class="layout-copy">
-                    2011-2016 &copy; TalkingData
+                    2013-2018 &copy; LunnaData
                 </div>
             </Col>
         </Row>
@@ -153,6 +165,27 @@
 </template>
 <script>
     export default {
-        
+        data () {
+            return {
+                spanLeft: 5,
+                spanRight: 19
+            }
+        },
+        computed: {
+            iconSize () {
+                return this.spanLeft === 5 ? 14 : 24;
+            }
+        },
+        methods: {
+            toggleClick () {
+                if (this.spanLeft === 5) {
+                    this.spanLeft = 2;
+                    this.spanRight = 22;
+                } else {
+                    this.spanLeft = 5;
+                    this.spanRight = 19;
+                }
+            }
+        }
     }
 </script>
