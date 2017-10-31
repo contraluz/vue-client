@@ -136,6 +136,10 @@
                         <Icon type="ios-keypad" :size="iconSize"></Icon>
                         <span class="layout-text"><router-link to="/comment" >评论</router-link></span>
                     </MenuItem>
+                    <MenuItem name="6">
+                        <Icon type="ios-analytics" :size="iconSize"></Icon>
+                        <span class="layout-text"><router-link to="/upload" >上传</router-link></span>
+                    </MenuItem>
                 </Menu>
             </Col>
             <Col :span="spanRight">

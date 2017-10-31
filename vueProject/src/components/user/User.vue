@@ -15,7 +15,7 @@
         @on-page-size-change="onPageSizeChange"></Page>
 
 
-         <Modal
+        <Modal
             v-model="modal"
             title="数据操作"
         >
@@ -43,6 +43,8 @@
     </div>
 </template>
 <script>
+import md5 from 'crypto-js/md5';
+
     export default {
         data () {
             const validateAge = (rule, value, callback) => {
@@ -185,6 +187,7 @@
             handleSubmit (name) {
                 this.$refs[name].validate((valid) => {
                     if (valid) {
+                        this.formValidate.password = md5(this.formValidate.password).toString()
                         if(this.formValidate._id && this.formValidate._id.length>0){
                             //如果传入id了，就是编辑页，打开编辑页-----否则是新建，input里面没东西
                             this.$http.put(`http://localhost:3000/users/data/${this.formValidate._id}`,this.formValidate)
@@ -270,6 +273,7 @@
 
             },
             getData(){
+                ///这里改变了：1
                  this.$http.post('http://localhost:3000/users/list',this.filter)
                 .then(res=>{
                     this.filter.list = res.data.rows;

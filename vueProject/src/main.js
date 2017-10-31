@@ -9,6 +9,7 @@ import 'iview/dist/styles/iview.css';    // 使用 CSS
 import axios from 'axios';
 import VueAxios from 'vue-axios';
 
+
 const router = new VueRouter({
 	routes:routes, // 可以直接写成routes
 	mode:'history' // mode设置成history，那么地址就可以请求http://localhost:8080/user
