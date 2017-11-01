@@ -24,7 +24,6 @@
                 <FormItem label="数据内容" prop="title">
                     <Input v-model="formValidate.title" placeholder="请输入内容"></Input>
                 </FormItem>
-                
                 <FormItem>
                     <Button type="primary" @click="update()">提交</Button>
                 </FormItem>
@@ -62,7 +61,7 @@
                                             type: 'ios-folder-outline'
                                         },
                                         style: {
-                                            marginRight: '8px'
+                                            marginRight: '8px',
                                         }
                                     }),
                                     h('span', data.title)
