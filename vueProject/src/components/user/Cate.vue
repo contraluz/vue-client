@@ -218,7 +218,7 @@
                 
             },
             getData(){
-                this.$http.get('http://localhost:3000/cate/list',this.filter)
+                this.$http.post('http://localhost:3000/cate/list',this.filter)
                 .then(res=>{
                     // this.filter.list =  res.data;
                     this.cateData[0].children = res.data;

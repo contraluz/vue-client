@@ -1,77 +1,73 @@
 <template>
-   
-   <!--  @on-select-change="onSelectChange" -->
     <Row type="flex">
-        <Col span="5"><Tree :data="cateData"></Tree></Col>
+         <Col span="5"><Tree :data="cateData" @on-select-change="onSelectChange"></Tree></Col>
          <Col span="19">
-         <Upload
-        multiple
-        type="drag"
-        name="avatar"
-        action="http://localhost:3000/upload/upload">
-        <div style="padding: 20px 0">
-            <Icon type="ios-cloud-upload" size="52" style="color: #3399ff"></Icon>
-            <p>点击或将文件拖拽到这里上传</p>
-        </div>
-    </Upload>
+             <Button type="primary" @click="onAdd">添加</Button>
+            <Button type="error" @click="onDeletes">删除多条记录</Button>
+            <Input v-model="filter.name">
+                <Button slot="append" icon="ios-search" @click="onSearch" ></Button>
+            </Input>
 
-        <Button type="primary" @click="getData">刷新</Button>
-        <Button type="error" @click="onDeletes">删除多条记录</Button>
-        <Input v-model="filter.name">
-            <Button slot="append" icon="ios-search" @click="onSearch" ></Button>
-        </Input>
-        <Table border :columns="columns" :data="filter.list" @on-selection-change="onSelectionChange"></Table><br>
-    
-        <Page :total="filter.total" size="small"  
-        show-total show-elevator show-sizer
-        @on-change="onChange"
-        @on-page-size-change="onPageSizeChange"></Page>
+            <Table border :columns="columns" :data="filter.list" @on-selection-change="onSelectionChange"></Table><br>
+        
+            <Page :total="filter.total" size="small"  
+            show-total show-elevator show-sizer
+            @on-change="onChange"
+            @on-page-size-change="onPageSizeChange"></Page>
 
 
-        <Modal
-            v-model="modal"
-            title="数据操作"
-        >
-            <Form ref="formValidate" :model="formValidate" :label-width="80">                
-                <FormItem label="图片名称" prop="filename">
-                    <Input v-model="formValidate.filename"></Input>
-                </FormItem>
-                <FormItem label="确认名称" prop="title">
-                    <Input v-model="formValidate.filename" disabled></Input>
-                </FormItem>
-                <FormItem label="大小" prop="size">
-                    <Input v-model="formValidate.size"></Input>
-                </FormItem>
-                <FormItem label="格式" prop="mimetype">
-                    <Input v-model="formValidate.mimetype" disabled></Input>
-                </FormItem>
-                <FormItem label="路径" prop="path">
-                    <Input v-model="formValidate.path"></Input>
-                </FormItem>
-                
-                
-                <FormItem>
-                    <Button type="primary" @click="handleSubmit('formValidate')">提交</Button>
-                    <Button type="ghost" @click="handleReset('formValidate')" style="margin-left: 8px">重置</Button>
-                </FormItem>
-            </Form>
-        </Modal>
+            <Modal
+                v-model="modal"
+                title="数据操作"
+                width=800
+            >
+                <Form ref="formValidate" :model="formValidate"  :label-width="80">   
+                    <!-- <FormItem label="抬头" prop="title">
+                        <Input v-model="formValidate.title" placeholder="请输入抬头"></Input>
+                    </FormItem>         -->
+                    <FormItem label="名称" prop="name">
+                        <Input v-model="formValidate.name" placeholder="请输入名称"></Input>
+                    </FormItem>
+                    <!-- <FormItem label="内容" prop="content">
+                        <vue-editor v-model="formValidate.content" ></vue-editor>
+                         <Input v-model="formValidate.content" placeholder="请输入内容"></Input> 
+                    </FormItem> -->
+                    <FormItem label="价格" prop="price">
+                        <Input v-model="formValidate.price" placeholder="请输入价格"></Input>
+                    </FormItem> 
+                     <FormItem label="内容" prop="content">
+                           <vue-editor v-model="formValidate.content" ></vue-editor>
 
-        </Col>
+                    </FormItem>
+                    <FormItem>
+                        <Button type="primary" @click="handleSubmit('formValidate')">提交</Button>
+                        <Button type="ghost" @click="handleReset('formValidate')" style="margin-left: 8px">重置</Button>
+                    </FormItem>
+                </Form>
+            </Modal>
+         </Col>
+       
 
     </Row>
+    
 </template>
 <script>
+import { VueEditor } from 'vue2-editor'
     export default {
+        components: {
+            VueEditor
+        },
         data () {
-
+            
             return {
+                content: '<h1>Some initial content</h1>'  ,
                 formValidate: {
-                    filename: '',
-                    size: '',
-                    destination: ''
+                    name: '',
+                    content: '', 
+                    price: '',
+                    title: ""
                 },
-                 ids:[],
+                ids:[],
                 modal: false,
                 filter:{
                     list:[],
@@ -87,20 +83,46 @@
                         align: 'center',
                         
                     },
+                    // {
+                    //     title: '抬头',
+                    //     key: 'title',
+                    //     align: 'center'
+                    // },
                     {
                         
-                        title: '文件名',
-                        key: 'filename',
+                        title: '名称',
+                        align: 'center',
+                        key: 'name',
+                        render: (h, params) => {
+                            return h('div', [
+                                h('Icon', {
+                                    props: {
+                                        type: 'person'
+                                    }
+                                }),
+                                h('strong', params.row.name)
+                            ]);
+                        }
                     },
-                    {
-                        title: '大小',
-                        key: 'size',
-                        sortable: true
-                    },
-                    {
-                        title: '格式',
-                        key: 'mimetype',
+                    // {
+                    //     title: '内容',
+                    //     key: 'content',
+                    //     align: 'center',
+                    //     type:'html'
                         
+                    // },
+                    {
+                        title: '价格￥',
+                        key: 'price',
+                        sortable: true,
+                        align: 'center',
+                        
+                    },
+                    {
+                        title: '内容',
+                        key: 'content',
+                        align: 'center',
+                        type:'html'
                     },
                     {
                         title: '操作',
@@ -122,7 +144,7 @@
                                             this.show(params.row)
                                         }
                                     }
-                                }, '查看'),
+                                }, '编辑'),
                                 h('Button', {
                                     props: {
                                         type: 'error',
@@ -138,6 +160,7 @@
                         }
                     }
                 ],
+                
                 cateData: [
                     {
                         title: '分类管理',
@@ -176,35 +199,9 @@
                     type: 'ghost',
                     size: 'small',
                 }
-                
-                
             }
         },
         methods: {
-            
-            handleSubmit (name) {
-                    
-                if(this.formValidate._id && this.formValidate._id.length>0){
-                    //如果传入id了，就是编辑页，打开编辑页-----否则是新建，input里面没东西
-                    this.$http.put(`http://localhost:3000/upload/data/${this.formValidate._id}`,this.formValidate)
-                    .then(res=>{
-                        this.$Message.success('提交成功!');
-                        this.modal = false;
-                        this.getData();
-                    })
-                }else{
-                    this.$http.post('http://localhost:3000/upload/data',this.formValidate)
-                    .then(res=>{
-                        this.$Message.success('提交成功!');
-                        this.modal = false;
-                        this.getData();
-                    })
-                }         
-              
-            },
-            handleReset (name) {
-                this.$refs[name].resetFields();
-            },
             onSelectChange(res){
                 console.log(res)
                 if(res[0].children){
@@ -217,6 +214,76 @@
 
 
              },
+            renderContent (h, { root, node, data }) {
+                return h('span', {
+                    style: {
+                        display: 'inline-block',
+                        width: '100%'
+                    }
+                }, [
+                    h('span', [
+                        h('Icon', {
+                            props: {
+                                type: 'ios-paper-outline'
+                            },
+                            style: {
+                                marginRight: '8px'
+                            }
+                        }),
+                        h('span', data.title)
+                    ]),
+                    h('span', {
+                        style: {
+                            display: 'inline-block',
+                            float: 'right',
+                            marginRight: '32px'
+                        }
+                    })
+                ]);
+            },
+            //左侧 树
+            getDataList(){
+                this.$http.post('http://localhost:3000/cate/list',this.filter)
+                .then(res=>{
+                    console.log(res)
+                    // this.filter.list =  res.data;
+                    this.cateData[0].children = res.data;
+
+                })
+            },
+            
+            //以下是右边的方框
+            handleSubmit (name) {       
+                if(this.formValidate._id && this.formValidate._id.length>0){
+                    //如果传入id了，就是编辑页，打开编辑页-----否则是新建，input里面没东西
+                    console.log(this.formValidate)
+
+                    this.$http.put(`http://localhost:3000/product/data/${this.formValidate._id}`,this.formValidate)
+                    .then(res=>{
+                        this.$Message.success('提交成功!');
+                        this.modal = false;
+                        this.formValidate._id="";
+                        this.getData();
+                    })
+                }else{
+                    console.log("ok")
+                    this.$http.post('http://localhost:3000/product/data',this.formValidate)
+                    .then(res=>{
+                        this.$Message.success('提交成功!');
+                        this.modal = false;
+                        this.getData();
+                    })
+                }
+                this.getDataList();
+            },
+            handleReset (name) {
+                this.$refs[name].resetFields();
+            },
+            onAdd(){
+                this.modal = true;
+                Object.assign(this.$data.formValidate,this.$options.data().formValidate);
+                // 对象合并，并且初始表单数据
+            },
             onSelectionChange(selection){
                 if(selection && selection.length>0){
                      var ids = [];
@@ -225,7 +292,6 @@
                          ids.push(selection[i]._id);
                      }
                      this.ids = ids;
-                      this.getDataList();
                 }
             },
             onDeletes(){
@@ -235,11 +301,10 @@
                     content: '<p>确认删除该记录吗？</p>',
                     onOk: () => {
                    
-                        this.$http.post('http://localhost:3000/upload/deletes',{ids:this.ids.toString()})
+                        this.$http.post('http://localhost:3000/product/deletes',{ids:this.ids.toString()})
                         .then(res=>{
                             this.$Message.info('删除数据成功');
                             this.getData();
-                            
                         })       
                        
                     },
@@ -259,11 +324,10 @@
                     content: '<p>确认删除该记录吗？</p>',
                     onOk: () => {
                         
-                        this.$http.delete(`http://localhost:3000/upload/data/${id}`)
+                        this.$http.delete(`http://localhost:3000/product/data/${id}`)
                         .then(res=>{
                             this.$Message.info('删除数据成功');
                             this.getData();
-                            
                         })
                        
                     },
@@ -275,13 +339,14 @@
             },
             getData(){
                 ///这里改变了：1
-                 this.$http.get('http://localhost:3000/upload/list',this.filter)
+                 this.$http.get('http://localhost:3000/product/list',this.filter)
                 .then(res=>{
-                    console.log(res)
+                   console.log(res)
                     this.filter.list = res.data;
                     this.filter.total = res.data.total;
                     this.filter.page = res.data.page;
-                     this.getDataList();
+                    this.getDataList();
+                    
                 })
             },
             onChange(page){
@@ -293,21 +358,15 @@
                 this.getData();
             },
             onSearch(){
+                console.log(this.filter.name)
                 this.getData();
             },
-            getDataList(){
-                this.$http.post('http://localhost:3000/cate/list',this.filter)
-                .then(res=>{
-                    console.log(res)
-                    // this.filter.list =  res.data;
-                    this.cateData[0].children = res.data;
-
-                })
-            }
-            
+         
         },
         created(){
             this.getData();
+            this.getDataList();
+            
         }
     }
 </script>

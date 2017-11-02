@@ -140,6 +140,10 @@
                         <Icon type="ios-analytics" :size="iconSize"></Icon>
                         <span class="layout-text"><router-link to="/upload" >上传</router-link></span>
                     </MenuItem>
+                    <MenuItem name="7">
+                        <Icon type="ios-keypad" :size="iconSize"></Icon>
+                        <span class="layout-text"><router-link to="/product" >产品</router-link></span>
+                    </MenuItem>
                 </Menu>
             </Col>
             <Col :span="spanRight">
@@ -161,7 +165,7 @@
                     </div>
                 </div>
                 <div class="layout-copy">
-                    2013-2018 &copy; LunnaData
+                    2013-2018 &copy; San Francisco
                 </div>
             </Col>
         </Row>

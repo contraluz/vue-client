@@ -2,7 +2,7 @@
     <div>
         <Button type="primary" @click="onAdd">添加</Button>
         <Button type="error" @click="onDeletes">删除多条记录</Button>
-        <Input v-model="filter.name">
+        <Input v-model="filter.name" @keyup="onSearch">
             <Button slot="append" icon="ios-search" @click="onSearch" ></Button>
         </Input>
 
@@ -180,10 +180,7 @@ import md5 from 'crypto-js/md5';
             }
         },
         methods: {
-            //全选
-            // handleSelectAll (status) {
-            //     this.$refs.selection.selectAll(status);
-            // },
+            
             handleSubmit (name) {
                 this.$refs[name].validate((valid) => {
                     if (valid) {
@@ -276,6 +273,7 @@ import md5 from 'crypto-js/md5';
                 ///这里改变了：1
                  this.$http.post('http://localhost:3000/users/list',this.filter)
                 .then(res=>{
+                    console.log(res)
                     this.filter.list = res.data.rows;
                     this.filter.total = res.data.total;
                     this.filter.page = res.data.page;
