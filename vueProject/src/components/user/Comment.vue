@@ -204,7 +204,7 @@ import { VueEditor } from 'vue2-editor'
         },
         methods: {
             onSelectChange(res){
-                console.log(res)
+                // console.log(res)
                 if(res[0].children){
                     this.filter.list = res[0].children;
                     this.getDataList();
@@ -246,7 +246,7 @@ import { VueEditor } from 'vue2-editor'
             getDataList(){
                 this.$http.post('http://localhost:3000/cate/list',this.filter)
                 .then(res=>{
-                    console.log(res)
+                    // console.log(res)
                     // this.filter.list =  res.data;
                     this.cateData[0].children = res.data;
 
@@ -257,7 +257,7 @@ import { VueEditor } from 'vue2-editor'
             handleSubmit (name) {       
                 if(this.formValidate._id && this.formValidate._id.length>0){
                     //如果传入id了，就是编辑页，打开编辑页-----否则是新建，input里面没东西
-                    console.log(this.formValidate)
+                    // console.log(this.formValidate)
 
                     this.$http.post(`http://localhost:3000/comment/data/${this.formValidate._id}`,this.formValidate)
                     .then(res=>{
@@ -359,7 +359,7 @@ import { VueEditor } from 'vue2-editor'
                 this.getData();
             },
             onSearch(){
-                console.log(this.filter.name)
+                // console.log(this.filter.name)
                 this.getData();
             },
          

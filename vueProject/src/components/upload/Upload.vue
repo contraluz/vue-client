@@ -2,8 +2,8 @@
    
    <!--  @on-select-change="onSelectChange" -->
     <Row type="flex">
-        <Col span="5"><Tree :data="cateData"></Tree></Col>
-         <Col span="19">
+        <!-- <Col span="5"><Tree :data="cateData"></Tree></Col> -->
+         <Col span="24">
          <Upload
         multiple
         type="drag"
@@ -17,7 +17,7 @@
 
         <Button type="primary" @click="getData">刷新</Button>
         <Button type="error" @click="onDeletes">删除多条记录</Button>
-        <Input v-model="filter.name">
+        <Input v-model="filter.filename">
             <Button slot="append" icon="ios-search" @click="onSearch" ></Button>
         </Input>
         <Table border :columns="columns" :data="filter.list" @on-selection-change="onSelectionChange"></Table><br>
@@ -78,7 +78,7 @@
                     total:0,
                     page:1,
                     rows:10,
-                    name:''
+                    filename:''
                 },
                 columns: [
                     {
@@ -275,10 +275,10 @@
             },
             getData(){
                 ///这里改变了：1
-                 this.$http.get('http://localhost:3000/upload/list',this.filter)
+                 this.$http.post('http://localhost:3000/upload/list',this.filter)
                 .then(res=>{
                     console.log(res)
-                    this.filter.list = res.data;
+                    this.filter.list = res.data.rows;
                     this.filter.total = res.data.total;
                     this.filter.page = res.data.page;
                      this.getDataList();
@@ -293,12 +293,13 @@
                 this.getData();
             },
             onSearch(){
+                console.log(this.filter.filename)
                 this.getData();
             },
             getDataList(){
                 this.$http.post('http://localhost:3000/cate/list',this.filter)
                 .then(res=>{
-                    console.log(res)
+                    // console.log(res)
                     // this.filter.list =  res.data;
                     this.cateData[0].children = res.data;
 

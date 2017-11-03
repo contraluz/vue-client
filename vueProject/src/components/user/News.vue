@@ -72,7 +72,8 @@ import { VueEditor } from 'vue2-editor'
                     content: '',
                     comment: '',
                     words: '',
-                    title: ""
+                    title: "",
+                    cateId: ""
                 },
                 ids:[],
                 modal: false,
@@ -116,9 +117,11 @@ import { VueEditor } from 'vue2-editor'
                         key:'filename',
                         align: 'center',
                         render:(h,params)=>{
+                            console.log(params)
                             return h('img',{
                                 attrs:{
-                                    src:'http://localhost:3000/'+"avatar-1509523594402.jpg",
+                                    src:'http://localhost:3000/'+params.row.filename,
+                                    // src:'http://localhost:3000/'+"avatar-1509421410882.jpg",
                                     style: 'width: 100px;height: 100px;'
                                 }
                             })
@@ -228,9 +231,17 @@ import { VueEditor } from 'vue2-editor'
                 console.log("点了上传")
             },
             onSelectChange(res){
-                // console.log(res)
+                console.log(res[0]._id)
+                // if(this.formValidate.cateId){
+                //     this.formValidate.cateId=""
+                // }else{
+                //     this.formValidate.cateId=res[0]._id
+                // }
+                
+                // console.log(res[0]._id)
 
                 if(res[0].children){
+                    
                     this.filter.list = res[0].children;
                     this.getDataList();
                 }else{
@@ -282,7 +293,7 @@ import { VueEditor } from 'vue2-editor'
             handleSubmit (name) {       
                 if(this.formValidate._id && this.formValidate._id.length>0){
                     //如果传入id了，就是编辑页，打开编辑页-----否则是新建，input里面没东西
-                    console.log(this.formValidate)
+                    // console.log(this.formValidate)
 
                     this.$http.put(`http://localhost:3000/news/data/${this.formValidate._id}`,this.formValidate)
                     .then(res=>{
@@ -292,7 +303,7 @@ import { VueEditor } from 'vue2-editor'
                         this.getData();
                     })
                 }else{
-                    console.log("ok")
+                    // console.log("ok")
                     this.$http.post('http://localhost:3000/news/data',this.formValidate)
                     .then(res=>{
                         this.$Message.success('提交成功!');
@@ -367,7 +378,7 @@ import { VueEditor } from 'vue2-editor'
                 ///这里改变了：1
                  this.$http.post('http://localhost:3000/news/list',this.filter)
                 .then(res=>{
-                    console.log(res)
+                    // console.log(res)
                     // var cateArr=[];
                     // for (var i = 0 ,len = res.data.length; i < len ;i++){
                     //     cateArr=cateArr.concat(res.data[i].children)
@@ -389,7 +400,7 @@ import { VueEditor } from 'vue2-editor'
                 this.getData();
             },
             onSearch(){
-                console.log(this.filter.name)
+                // console.log(this.filter.name)
                 this.getData();
             },
          
