@@ -28,6 +28,13 @@
                     <FormItem label="名称" prop="name">
                         <Input v-model="formValidate.name" placeholder="请输入名称"></Input>
                     </FormItem>
+                    <FormItem label="图片" prop="filename">
+                       <Input v-model="formValidate.filename">
+                            <span slot="append" icon="ios-search" @click="onPictureSub" >选择图片</span>
+                       </Input>
+                       
+                        <!-- <Input v-model="formValidate.content" placeholder="请输入内容"></Input> -->
+                    </FormItem>
                     <FormItem label="内容" prop="content">
                         <vue-editor v-model="formValidate.content" ></vue-editor>
                         <!-- <Input v-model="formValidate.content" placeholder="请输入内容"></Input> -->
@@ -104,6 +111,20 @@ import { VueEditor } from 'vue2-editor'
                             ]);
                         }
                     },
+                    {
+                        title:'图片',
+                        key:'filename',
+                        align: 'center',
+                        render:(h,params)=>{
+                            return h('img',{
+                                attrs:{
+                                    src:'http://localhost:3000/'+"avatar-1509523594402.jpg",
+                                    style: 'width: 100px;height: 100px;'
+                                }
+                            })
+                        }
+                    },
+
                     {
                         title: '内容',
                         key: 'content',
@@ -202,6 +223,10 @@ import { VueEditor } from 'vue2-editor'
             }
         },
         methods: {
+            //图片--新闻缩略图
+            onPictureSub(){
+                console.log("点了上传")
+            },
             onSelectChange(res){
                 // console.log(res)
 

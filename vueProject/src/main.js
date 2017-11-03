@@ -8,6 +8,7 @@ import 'iview/dist/styles/iview.css';    // 使用 CSS
 
 import axios from 'axios';
 import VueAxios from 'vue-axios';
+import {store} from './store';
 
 
 const router = new VueRouter({
@@ -24,5 +25,6 @@ axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded
 new Vue({
   el: '#app',
   router,
+  store,
   render: h => h(App)
 })
